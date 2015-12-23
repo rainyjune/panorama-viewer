@@ -3,15 +3,17 @@ class YuanPano {
   constructor(canvasid, imageURL){
     //get canvas and set up call backs
     this.pano_canvas = document.getElementById('canvas');//Canvas to which to draw the panorama
-    /*
-    this.pano_canvas.onmousedown = this.mouseDown;
-    window.onmousemove = this.mouseMove;
-    window.onmouseup = this.mouseUp;
-    window.onmousewheel = this.mouseScroll;
-    window.onkeydown = this.keyDown;
-    this.draw();
-    setInterval(this.draw, 1000/YuanPano.FPS);
-    */
+    this.pano_canvas.width = window.innerWidth;
+    this.pano_canvas.height = window.innerHeight;
+    
+    this.pano_canvas.onmousedown = (e) => {this.mouseDown(e)};
+    window.onmousemove = (e) => {this.mouseMove(e);};
+    window.onmouseup = (e) => {this.mouseUp(e);};
+    window.onmousewheel = (e) => {this.mouseScroll(e);};
+    window.onkeydown = (e) => {this.keyDown(e);};
+    //this.draw();
+    //setInterval(this.draw, 1000/YuanPano.FPS);
+    
     
     this.img_buffer=null;
     this.img = new Image();
@@ -20,7 +22,6 @@ class YuanPano {
 	}
 	
   imageLoaded(){
-    debugger;
     var   buffer = document.createElement("canvas");
     var   buffer_ctx = buffer.getContext ("2d");
     let img = this.img;
@@ -43,42 +44,43 @@ class YuanPano {
       this.img_buffer[j+1] = buffer_pixels[i+1];
       this.img_buffer[j+2] = buffer_pixels[i+2];
  		}
+    this.draw();
 	}
 
 
   mouseDown(e){
-    mouseIsDown=true;
-    mouseDownPosLastX=e.clientX;
-    mouseDownPosLastY=e.clientY;	
+    YuanPano.mouseIsDown=true;
+    YuanPano.mouseDownPosLastX=e.clientX;
+    YuanPano.mouseDownPosLastY=e.clientY;	
   }
 
   mouseMove(e){
-    if(mouseIsDown==true){
-      cam_heading-=(e.clientX-mouseDownPosLastX);
-      cam_pitch+=0.5*(e.clientY-mouseDownPosLastY);
-      cam_pitch=Math.min(180,Math.max(0,cam_pitch));
-      mouseDownPosLastX=e.clientX;
-      mouseDownPosLastY=e.clientY;	
-      draw();
-      }
+    if(YuanPano.mouseIsDown==true){
+      YuanPano.cam_heading-=(e.clientX-YuanPano.mouseDownPosLastX);
+      YuanPano.cam_pitch+=0.5*(e.clientY-YuanPano.mouseDownPosLastY);
+      YuanPano.cam_pitch=Math.min(180,Math.max(0,YuanPano.cam_pitch));
+      YuanPano.mouseDownPosLastX=e.clientX;
+      YuanPano.mouseDownPosLastY=e.clientY;	
+      this.draw();
+    }
   }
 
   mouseUp(e){
-    mouseIsDown=false;
-    draw();
+    YuanPano.mouseIsDown=false;
+    this.draw();
   }
 
   mouseScroll(e){
-    cam_fov+=e.wheelDelta/120;
-    cam_fov=Math.min(90,Math.max(30,cam_fov));
-    draw();
+    YuanPanocam_fov+=e.wheelDelta/120;
+    YuanPano.cam_fov=Math.min(90,Math.max(30,YuanPano.cam_fov));
+    this.draw();
   }
 
   keyDown(e){
     if(e.keyCode==73){	//i==73 Info
-      displayInfo = !displayInfo;
-      draw();
-      }
+      YuanPano.displayInfo = !YuanPano.displayInfo;
+      this.draw();
+    }
   }
 
   renderPanorama(canvas){
@@ -165,9 +167,10 @@ class YuanPano {
 
 
   draw(){
-    var pano_canvas = this.pano_canvas;
+    let pano_canvas = this.pano_canvas,
+        img = this.img;
+        
     if(this.pano_canvas!=null && this.pano_canvas.getContext!=null){
-      debugger;
     	var ctx = this.pano_canvas.getContext("2d");
     	
     	//clear canvas
@@ -182,7 +185,7 @@ class YuanPano {
       //draw info text
       if(YuanPano.displayInfo==true) {
         ctx.fillStyle = "rgba(255,255,255,0.75)";
-        drawRoundedRect(ctx,20,pano_canvas.height-60-20,180,60,7);
+        this.drawRoundedRect(ctx,20,pano_canvas.height-60-20,180,60,7);
         
         ctx.fillStyle = "rgba(0, 0, 0, 1)";
         ctx.font="10pt helvetica";
@@ -201,18 +204,10 @@ YuanPano.DEG2RAD = Math.PI/180.0;
 YuanPano.mouseIsDown=false;
 YuanPano.mouseDownPosLastX=0;
 YuanPano.mouseDownPosLastY=0;
-YuanPano.displayInfo=false;
+YuanPano.displayInfo=true;
 YuanPano.highquality=true;
 
 //Camera state
 YuanPano.cam_heading=90.0;
 YuanPano.cam_pitch=90.0;
 YuanPano.cam_fov=90;
-
-/*
-  //Load image 
-  var img_buffer=null;
-  var img = new Image();
-  img.onload = imageLoaded;
-  img.src = 'pano.jpg';		
-  */
