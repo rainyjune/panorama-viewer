@@ -1,0 +1,25 @@
+{
+  "name": "yuanpano",
+  "version": "1.0.0",
+  "description": "A pure JavaScript panorama viewer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rainyjune/panorama-viewer.git"
+  },
+  "keywords": [
+    "panorama"
+  ],
+  "author": "rainyjune <rainyjune@live.cn>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rainyjune/panorama-viewer/issues"
+  },
+  "homepage": "https://github.com/rainyjune/panorama-viewer#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+}
