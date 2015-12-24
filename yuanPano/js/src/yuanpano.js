@@ -108,61 +108,61 @@ class YuanPano {
         cam_fov = this._cam_fov;
         
     if(canvas!=null && img_buffer!=null){
-      var ctx = canvas.getContext("2d");
-      var imgdata = ctx.getImageData(0, 0,canvas.width,canvas.height);
-      var pixels = imgdata.data;
+      let ctx = canvas.getContext("2d"),
+          imgdata = ctx.getImageData(0, 0,canvas.width,canvas.height),
+          pixels = imgdata.data;
     
-      var src_width=img.width;
-      var src_height=img.height;
-      var dest_width=canvas.width;
-      var dest_height=canvas.height;
+      let src_width = img.width,
+          src_height = img.height,
+          dest_width = canvas.width,
+          dest_height = canvas.height;
       
       //calculate camera plane
-      var theta_fac=src_height/Math.PI;
-      var phi_fac=src_width*0.5/Math.PI
-      var ratioUp=2.0*Math.tan(cam_fov * DEG2RAD/2.0);
-      var ratioRight=ratioUp*1.33;
-      var camDirX=Math.sin(cam_pitch*DEG2RAD)*Math.sin(cam_heading*DEG2RAD);
-      var camDirY=Math.cos(cam_pitch*DEG2RAD);
-      var camDirZ=Math.sin(cam_pitch*DEG2RAD)*Math.cos(cam_heading*DEG2RAD);
-      var camUpX=ratioUp*Math.sin((cam_pitch-90.0)*DEG2RAD)*Math.sin(cam_heading*DEG2RAD);
-      var camUpY=ratioUp*Math.cos((cam_pitch-90.0)*DEG2RAD);
-      var camUpZ=ratioUp*Math.sin((cam_pitch-90.0)*DEG2RAD)*Math.cos(cam_heading*DEG2RAD);
-      var camRightX=ratioRight*Math.sin((cam_heading-90.0)*DEG2RAD);
-      var camRightY=0.0;
-      var camRightZ=ratioRight*Math.cos((cam_heading-90.0)*DEG2RAD);
-      var camPlaneOriginX=camDirX + 0.5*camUpX - 0.5*camRightX;
-      var camPlaneOriginY=camDirY + 0.5*camUpY - 0.5*camRightY;
-      var camPlaneOriginZ=camDirZ + 0.5*camUpZ - 0.5*camRightZ;
+      let theta_fac = src_height/Math.PI,
+          phi_fac = src_width*0.5/Math.PI,
+          ratioUp = 2.0*Math.tan(cam_fov * DEG2RAD/2.0),
+          ratioRight = ratioUp*1.33,
+          camDirX = Math.sin(cam_pitch*DEG2RAD)*Math.sin(cam_heading*DEG2RAD),
+          camDirY = Math.cos(cam_pitch*DEG2RAD),
+          camDirZ = Math.sin(cam_pitch*DEG2RAD)*Math.cos(cam_heading*DEG2RAD),
+          camUpX = ratioUp*Math.sin((cam_pitch-90.0)*DEG2RAD)*Math.sin(cam_heading*DEG2RAD),
+          camUpY = ratioUp*Math.cos((cam_pitch-90.0)*DEG2RAD),
+          camUpZ = ratioUp*Math.sin((cam_pitch-90.0)*DEG2RAD)*Math.cos(cam_heading*DEG2RAD),
+          camRightX = ratioRight*Math.sin((cam_heading-90.0)*DEG2RAD),
+          camRightY = 0.0,
+          camRightZ = ratioRight*Math.cos((cam_heading-90.0)*DEG2RAD),
+          camPlaneOriginX = camDirX + 0.5*camUpX - 0.5*camRightX,
+          camPlaneOriginY = camDirY + 0.5*camUpY - 0.5*camRightY,
+          camPlaneOriginZ = camDirZ + 0.5*camUpZ - 0.5*camRightZ;
       
       //render image
-      var	i,j;
-      for(i=0;i<dest_height;i++){
-        for(j=0;j<dest_width;j++){
-          var	fx=j/dest_width;
-          var	fy=i/dest_height;
+      let	i,j;
+      for(i=0;i<dest_height;i++) {
+        for(j=0;j<dest_width;j++) {
+          let	fx=j/dest_width,
+             	fy=i/dest_height;
           
-          var	rayX=camPlaneOriginX + fx*camRightX - fy*camUpX;
-          var	rayY=camPlaneOriginY + fx*camRightY - fy*camUpY;
-          var	rayZ=camPlaneOriginZ + fx*camRightZ - fy*camUpZ;
-          var	rayNorm=1.0/Math.sqrt(rayX*rayX + rayY*rayY + rayZ*rayZ);
+          let	rayX = camPlaneOriginX + fx*camRightX - fy*camUpX,
+             	rayY = camPlaneOriginY + fx*camRightY - fy*camUpY,
+             	rayZ = camPlaneOriginZ + fx*camRightZ - fy*camUpZ,
+             	rayNorm = 1.0/Math.sqrt(rayX*rayX + rayY*rayY + rayZ*rayZ);
           
-          var	theta=Math.acos(rayY*rayNorm);
-            var	phi=Math.atan2(rayZ,rayX) + Math.PI;
-            var	theta_i=Math.floor(theta_fac*theta);
-            var	phi_i=Math.floor(phi_fac*phi);
+          let	theta = Math.acos(rayY*rayNorm),
+             	phi = Math.atan2(rayZ,rayX) + Math.PI,
+             	theta_i = Math.floor(theta_fac*theta),
+             	phi_i = Math.floor(phi_fac*phi);
             
-            var	dest_offset=4*(i*dest_width+j);
-          var	src_offset=3*(theta_i*src_width + phi_i);
+          let	dest_offset = 4*(i*dest_width+j),
+             	src_offset = 3*(theta_i*src_width + phi_i);
           
           pixels[dest_offset]     = img_buffer[src_offset];
           pixels[dest_offset+1]   = img_buffer[src_offset+1];
           pixels[dest_offset+2]   = img_buffer[src_offset+2];
           //pixels[dest_offset+3] = img_buffer[src_offset+3];
-          }
         }
+      }
       
-      //upload image data
+      // Paints data from the given ImageData object onto the bitmap.
       ctx.putImageData(imgdata, 0, 0);
     }
   }
@@ -181,13 +181,15 @@ class YuanPano {
     ctx.fill();	
   }
 
-
+  /**
+   * Clear the canvas, and rerender it. Also draws info text if needed.
+   */
   draw(){
     let pano_canvas = this.pano_canvas,
         img = this.img;
         
-    if(this.pano_canvas!=null && this.pano_canvas.getContext!=null){
-    	var ctx = this.pano_canvas.getContext("2d");
+    if(pano_canvas!=null && pano_canvas.getContext!=null){
+    	var ctx = pano_canvas.getContext("2d");
     	
     	//clear canvas
     	ctx.fillStyle = "rgba(0, 0, 0, 1)";
