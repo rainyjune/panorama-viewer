@@ -1,7 +1,6 @@
-
 class YuanPano {
   /**
-   * Note: private members starts with an underscore(_), as a convention please don't change them.
+   * Note: private members starts with an underscore(_), as a convention please don't change them out of the class.
    *
    */
   constructor(canvasid, imageURL) {
@@ -19,18 +18,18 @@ class YuanPano {
     this._mouseDownPosLastY = 0;
 
     //get canvas and set up call backs
-    this.pano_canvas = document.getElementById('canvas');//Canvas to which to draw the panorama
-    this.pano_canvas.width = window.innerWidth;
-    this.pano_canvas.height = window.innerHeight;
+    let canvas = document.getElementById(canvasid); //Canvas to which to draw the panorama
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    this.pano_canvas = canvas;
     
-    this.pano_canvas.onmousedown = (e) => {this.mouseDown(e)};
-    window.onmousemove = (e) => {this.mouseMove(e);};
-    window.onmouseup = (e) => {this.mouseUp(e);};
-    window.onmousewheel = (e) => {this.mouseScroll(e);};
-    window.onkeydown = (e) => {this.keyDown(e);};
+    canvas.onmousedown = (e) => {this.mouseDown(e)};
+    canvas.onmousemove = (e) => {this.mouseMove(e);};
+    canvas.onmouseup = (e) => {this.mouseUp(e);};
+    canvas.onmousewheel = (e) => {this.mouseScroll(e);};
+    canvas.onkeydown = (e) => {this.keyDown(e);};
     //this.draw();
     //setInterval(this.draw, 1000/YuanPano.FPS);
-    
     
     this.img_buffer=null;
     this.img = new Image();
@@ -39,8 +38,8 @@ class YuanPano {
 	}
 	
   imageLoaded(){
-    var   buffer = document.createElement("canvas");
-    var   buffer_ctx = buffer.getContext ("2d");
+    let buffer = document.createElement("canvas");
+    let buffer_ctx = buffer.getContext("2d");
     let img = this.img;
     
     //set buffer size
@@ -51,12 +50,12 @@ class YuanPano {
     buffer_ctx.drawImage(img,0,0);
     //return;  
     //get pixels
-    var buffer_imgdata = buffer_ctx.getImageData(0, 0,buffer.width,buffer.height);
-    var buffer_pixels = buffer_imgdata.data;
+    let buffer_imgdata = buffer_ctx.getImageData(0, 0,buffer.width,buffer.height);
+    let buffer_pixels = buffer_imgdata.data;
       
     //convert imgdata to float image buffer
     this.img_buffer = new Array(img.width*img.height*3);
-    for(var i=0,j=0;i<buffer_pixels.length;i+=4, j+=3){
+    for(let i = 0, j = 0; i < buffer_pixels.length; i += 4, j += 3) {
       this.img_buffer[j] 	= buffer_pixels[i];
       this.img_buffer[j+1] = buffer_pixels[i+1];
       this.img_buffer[j+2] = buffer_pixels[i+2];
