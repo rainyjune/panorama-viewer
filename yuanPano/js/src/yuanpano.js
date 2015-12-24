@@ -23,11 +23,12 @@ class YuanPano {
     canvas.height = window.innerHeight;
     this.pano_canvas = canvas;
     
-    canvas.onmousedown = (e) => {this.mouseDown(e);};
-    canvas.onmousemove = (e) => {this.mouseMove(e);};
-    canvas.onmouseup = (e) => {this.mouseUp(e);};
-    canvas.onmousewheel = (e) => {this.mouseScroll(e);};
-    window.onkeydown = (e) => {this.keyDown(e);};
+    new TouchObject(canvas);
+    
+    canvas.addEventListener('swipeStart', (e)=> { this.mouseDown(e); });
+    canvas.addEventListener('swipeProgress', (e)=> { this.mouseMove(e); });
+    canvas.addEventListener('swipe', (e)=> { this.mouseUp(e); });
+    
     //this.draw();
     //setInterval(this.draw, 1000/YuanPano.FPS);
     
@@ -37,7 +38,7 @@ class YuanPano {
     this.img.src = imageURL;	
 	}
 	
-  imageLoaded(){
+  imageLoaded() {
     let buffer = document.createElement("canvas");
     let buffer_ctx = buffer.getContext("2d");
     let img = this.img;
@@ -48,7 +49,7 @@ class YuanPano {
     
     //draw image
     buffer_ctx.drawImage(img,0,0);
-    //return;  
+
     //get pixels
     let buffer_imgdata = buffer_ctx.getImageData(0, 0,buffer.width,buffer.height);
     let buffer_pixels = buffer_imgdata.data;
@@ -65,18 +66,24 @@ class YuanPano {
 
 
   mouseDown(e){
+    let clientX = e.detail.clientX,
+        clientY = e.detail.clientY;
+        
     this._mouseIsDown = true;
-    this._mouseDownPosLastX = e.clientX;
-    this._mouseDownPosLastY = e.clientY;	
+    this._mouseDownPosLastX = clientX;
+    this._mouseDownPosLastY = clientY;	
   }
 
   mouseMove(e){
+    let clientX = e.detail.clientX,
+        clientY = e.detail.clientY;
+        
     if(this._mouseIsDown === true){
-      this._cam_heading -= (e.clientX- this._mouseDownPosLastX);
-      this._cam_pitch += 0.5*(e.clientY- this._mouseDownPosLastY);
+      this._cam_heading -= (clientX- this._mouseDownPosLastX);
+      this._cam_pitch += 0.5*(clientY- this._mouseDownPosLastY);
       this._cam_pitch = Math.min(180,Math.max(0,this._cam_pitch));
-      this._mouseDownPosLastX = e.clientX;
-      this._mouseDownPosLastY = e.clientY;	
+      this._mouseDownPosLastX = clientX;
+      this._mouseDownPosLastY = clientY;	
       this.draw();
     }
   }
