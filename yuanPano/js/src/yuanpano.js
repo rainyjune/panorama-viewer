@@ -27,7 +27,7 @@ class YuanPano {
     canvas.onmousemove = (e) => {this.mouseMove(e);};
     canvas.onmouseup = (e) => {this.mouseUp(e);};
     canvas.onmousewheel = (e) => {this.mouseScroll(e);};
-    canvas.onkeydown = (e) => {this.keyDown(e);};
+    window.onkeydown = (e) => {this.keyDown(e);};
     //this.draw();
     //setInterval(this.draw, 1000/YuanPano.FPS);
     
