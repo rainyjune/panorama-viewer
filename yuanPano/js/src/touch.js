@@ -112,10 +112,8 @@
       }
     });
     
-    /** @access public */
-    this.horizontalOffset = 20,
+    this.horizontalOffset = 20;
     
-    /** @access public */
     this.verticalOffset = 30;
     
     this.isDebug = false;
@@ -583,7 +581,7 @@
   TouchObject.prototype.addEventListener = function(eventName, callback) {
     //EventsObject.on(eventName, callback);
     this.element.addEventListener(eventName, callback);
-  }
+  };
   
   TouchObject.prototype.trigger = function(eventName, customData) {
     //EventsObject.trigger(eventName, customData);
@@ -591,12 +589,12 @@
       detail: customData || null
     });
     this.element.dispatchEvent(event);
-  }
+  };
   
   TouchObject.prototype.dispose = function() {
     for (var i = 0; i < this.elementListeners.length; i ++) {
       var currentListener = this.elementListeners[i];
-      this.element.removeEventListener(currentListener["eventName"], currentListener["callback"]);
+      this.element.removeEventListener(currentListener.eventName, currentListener.callback);
     }
     this.elementListeners.length = 0;
   };
@@ -652,10 +650,7 @@
           fToBind = this,
           fNOP    = function() {},
           fBound  = function() {
-            return fToBind.apply(this instanceof fNOP
-                   ? this
-                   : oThis,
-                   aArgs.concat(Array.prototype.slice.call(arguments)));
+            return fToBind.apply(this instanceof fNOP ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
           };
 
       fNOP.prototype = this.prototype;
