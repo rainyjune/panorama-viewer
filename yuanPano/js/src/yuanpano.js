@@ -23,7 +23,7 @@ class YuanPano {
     canvas.height = window.innerHeight;
     this.pano_canvas = canvas;
     
-    canvas.onmousedown = (e) => {this.mouseDown(e)};
+    canvas.onmousedown = (e) => {this.mouseDown(e);};
     canvas.onmousemove = (e) => {this.mouseMove(e);};
     canvas.onmouseup = (e) => {this.mouseUp(e);};
     canvas.onmousewheel = (e) => {this.mouseScroll(e);};
@@ -33,7 +33,7 @@ class YuanPano {
     
     this.img_buffer=null;
     this.img = new Image();
-    this.img.onload = () => {this.imageLoaded()};
+    this.img.onload = () => {this.imageLoaded();};
     this.img.src = imageURL;	
 	}
 	
@@ -71,7 +71,7 @@ class YuanPano {
   }
 
   mouseMove(e){
-    if(this._mouseIsDown == true){
+    if(this._mouseIsDown === true){
       this._cam_heading -= (e.clientX- this._mouseDownPosLastX);
       this._cam_pitch += 0.5*(e.clientY- this._mouseDownPosLastY);
       this._cam_pitch = Math.min(180,Math.max(0,this._cam_pitch));
@@ -107,7 +107,7 @@ class YuanPano {
         cam_pitch = this._cam_pitch,
         cam_fov = this._cam_fov;
         
-    if(canvas!=null && img_buffer!=null){
+    if(canvas !== null && img_buffer !== null){
       let ctx = canvas.getContext("2d"),
           imgdata = ctx.getImageData(0, 0,canvas.width,canvas.height),
           pixels = imgdata.data;
@@ -188,7 +188,7 @@ class YuanPano {
     let pano_canvas = this.pano_canvas,
         img = this.img;
         
-    if(pano_canvas!=null && pano_canvas.getContext!=null){
+    if(pano_canvas !== null && pano_canvas.getContext !== null){
     	var ctx = pano_canvas.getContext("2d");
     	
     	//clear canvas
@@ -201,7 +201,7 @@ class YuanPano {
       var endTime = new Date();
       
       //draw info text
-      if(this.displayInfo==true) {
+      if(this.displayInfo === true) {
         ctx.fillStyle = "rgba(255,255,255,0.75)";
         this.drawRoundedRect(ctx,20,pano_canvas.height-60-20,180,60,7);
         
