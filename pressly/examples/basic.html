@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <script type="text/javascript" src="../pressly.panorama.js"></script>
+  </head>
+  <body>
+    <!-- The element to be initialized -->
+    <div id="panorama"></div>
+
+    <script type="text/javascript">
+      var panorama = new Panorama("#panorama", {
+        top: "images/tablet_u.jpg",
+        bottom: "images/tablet_d.jpg",
+        front: "images/tablet_f.jpg",
+        back: "images/tablet_b.jpg",
+        left: "images/tablet_l.jpg",
+        right: "images/tablet_r.jpg"
+      });
+    </script>
+  </body>
+</html>

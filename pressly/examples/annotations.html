@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <script type="text/javascript" src="../pressly.panorama.js"></script>
+    <style>
+      /**
+        Style annotations within the panorama
+      */
+      #panorama .annotation {
+        font-family: sans-serif;
+        font-weight: bold;
+        text-align: center;
+        text-shadow: 0px 0px 20px #fff, 0px 0px 30px #fff, 0px 1px 0px black;
+        color: white;
+        opacity: 0.8;
+      }
+
+      #panorama .annotation:hover {
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The element to be initialized -->
+    <div id="panorama"></div>
+
+    <script type="text/javascript">
+      var panorama = new Panorama("#panorama", {
+        top: "images/tablet_u.jpg",
+        bottom: "images/tablet_d.jpg",
+        front: "images/tablet_f.jpg",
+        back: "images/tablet_b.jpg",
+        left: "images/tablet_l.jpg",
+        right: "images/tablet_r.jpg"
+      });
+
+      // The annotate method returns a reference to a generated annotation element
+      var a = panorama.annotate("Advanced power steering", {
+        face: "front", // Specify which face the annotation will apear
+        left: "100px",
+        top: "540px",
+      });
+      
+      // You can bind events to this element
+      a.addEventListener("mousedown", function() {
+        alert("click!");
+      }, false);
+
+      panorama.annotate("MP3 CD Player<br>with XM Radio", {
+        face: "front",
+        left: "400px",
+        top: "628px"
+      });
+
+      // Label each face
+      panorama.annotate("Left", { face: "left", left: "40%", top: "50%" });
+      panorama.annotate("Right", { face: "right", left: "40%", top: "50%" });
+      panorama.annotate("Top", { face: "top", left: "40%", top: "50%" });
+      panorama.annotate("Bottom", { face: "bottom", left: "40%", top: "50%" });
+      panorama.annotate("Front", { face: "front", left: "40%", top: "50%" });
+      panorama.annotate("Back", { face: "back", left: "40%", top: "50%" });
+    </script>
+  </body>
+</html>
